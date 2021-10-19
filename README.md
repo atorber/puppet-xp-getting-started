@@ -21,6 +21,5 @@ $ npm install
 ### 3. Set you xp Token in [`main.js`](https://github.com/xp/wechaty-puppet-xp-demo/blob/master/main.js)
 run it:
 ```
-$ npm run demo
+$ npm run start
 ```
-![carbon](https://user-images.githubusercontent.com/64943823/117439626-a6cde080-af65-11eb-85a5-815aa422b5c5.png)
