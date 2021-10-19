@@ -1,25 +1,29 @@
-# Quick Start with Demo
+# 快速开始
 ### 0. 下载微信客户端并登陆
-下载指定版本的客户端
+下载 WeChatSetup-v3.3.0.115版本的PC微信客户端并登陆微信
 
-### 1. Prepare Node Environment
-[Install Node](https://nodejs.org/), 12/14 LTS version is recommended.
+### 1. 检查当前node环境
+[安装nodejs](https://nodejs.org/), 支持16LTS版本.
+
 ```
 $ node --version // >= v16.0.0
 ``` 
-### 2. Clone the [wechaty-puppet-xp-demo](https://github.com/xp/wechaty-puppet-xp-demo) project.
+### 2. 下载demo代码 [wechaty-puppet-xp-demo](https://github.com/xp/wechaty-puppet-xp-demo) .
 
 ```
 $ git clone git@github.com:xp/wechaty-puppet-xp-demo.git
 ```
-Then install Node dependencies.
+
+安装依赖.
+
 ```
 $ cd wechaty-puppet-xp-demo
 $ npm install
 ``` 
 
 ### 3. Set you xp Token in [`main.js`](https://github.com/xp/wechaty-puppet-xp-demo/blob/master/main.js)
-run it:
+运行:
+
 ```
 $ npm run start
 ```
