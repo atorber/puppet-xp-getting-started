@@ -1,30 +1,25 @@
 # Quick Start with Demo
-### 0. Apply Token
-You need PadLocal token to run this demo. [How to Apply Token](https://github.com/padlocal/wechaty-puppet-padlocal/wiki/How-to-Apply-Token)
+### 0. 下载微信客户端并登陆
+下载指定版本的客户端
 
 ### 1. Prepare Node Environment
 [Install Node](https://nodejs.org/), 12/14 LTS version is recommended.
 ```
-$ node --version // >= v12.0.0
+$ node --version // >= v16.0.0
 ``` 
-### 2. Clone the [wechaty-puppet-padlocal-demo](https://github.com/padlocal/wechaty-puppet-padlocal-demo) project.
+### 2. Clone the [wechaty-puppet-xp-demo](https://github.com/xp/wechaty-puppet-xp-demo) project.
 
 ```
-$ git clone git@github.com:padlocal/wechaty-puppet-padlocal-demo.git
+$ git clone git@github.com:xp/wechaty-puppet-xp-demo.git
 ```
 Then install Node dependencies.
 ```
-$ cd wechaty-puppet-padlocal-demo
+$ cd wechaty-puppet-xp-demo
 $ npm install
 ``` 
 
-### 3. Set you PadLocal Token in [`main.ts`](https://github.com/padlocal/wechaty-puppet-padlocal-demo/blob/master/main.ts)
-```ts
-const puppet = new PuppetPadlocal({
-    token: "YOUR_PADLOCAL_TOKEN"
-})
-```
-Then run it:
+### 3. Set you xp Token in [`main.js`](https://github.com/xp/wechaty-puppet-xp-demo/blob/master/main.js)
+run it:
 ```
 $ npm run demo
 ```
