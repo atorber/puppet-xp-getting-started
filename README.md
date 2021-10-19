@@ -21,8 +21,7 @@ $ cd wechaty-puppet-xp-demo
 $ npm install
 ``` 
 
-### 3. Set you xp Token in [`main.js`](https://github.com/xp/wechaty-puppet-xp-demo/blob/master/main.js)
-运行:
+### 3. 运行
 
 ```
 $ npm run start
