@@ -11,7 +11,7 @@ $ node --version // >= v16.0.0
 ### 2. 下载demo代码 [wechaty-puppet-xp-demo](https://github.com/xp/wechaty-puppet-xp-demo) .
 
 ```
-$ git clone git@github.com:atorber/wechaty-puppet-xp-demo.git
+$ git clone https://github.com/atorber/wechaty-puppet-xp-demo.git
 ```
 
 安装依赖.
