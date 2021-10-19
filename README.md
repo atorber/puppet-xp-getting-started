@@ -27,9 +27,7 @@ $ npm install
 $ npm run start
 ```
 
-## PUPPET COMPARISON
-
-XP is a young puppet,it keeps growing and improving.
+## 特性列表
 
 Puppet|xp👍
 :---|:---:
@@ -54,7 +52,7 @@ Puppet|xp👍
 登录事件|✅
 依赖协议|Windows
 
-## Blogs
+## 参考
 
 - [喜讯：使用Windows微信桌面版协议登录，wechaty免费版协议即将登场, @atorber, Jul 05, 2021](https://wechaty.js.org/2021/07/05/puppet-laozhang-wechat-bot/)
 - [全新的Windows puppet项目wechaty-puppet-xp启动, @atorber, Jul 13, 2021](https://wechaty.js.org/2021/07/13/wechaty-puppet-xp-start-up/)
