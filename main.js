@@ -193,15 +193,10 @@ bot
                 message,
                 textBox
             }
-            console.debug(payload)
-            payload = JSON.stringify(payload)
-            payload = JSON.parse(payload)
+            // console.debug(payload)
+            payload = JSON.parse(JSON.stringify(payload))
 
-            if (!message.self()) {
-                pub_msg(getEventsMsg('message', payload))
-            } else {
-                pub_msg(getEventsMsg('message', payload))
-            }
+            pub_msg(getEventsMsg('message', payload))
 
             // ding/dong test
             if (/^dong$/i.test(message.text())) {
