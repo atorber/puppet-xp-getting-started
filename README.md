@@ -1,4 +1,7 @@
 ## 快速开始
+
+**wechaty-puppet-xp仅支持windows操作系统下使用**
+
 ### 1. 下载微信客户端并登陆
 下载 [WeChatSetup-v3.3.0.115](https://github.com/wechaty/wechaty-puppet-xp/releases/download/v0.5/WeChatSetup-v3.3.0.115.exe) 版本的PC微信客户端并登陆微信
 
