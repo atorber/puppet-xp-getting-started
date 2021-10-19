@@ -88,28 +88,12 @@ bot
         } else {
             log.info("TestBot", `onScan: ${ScanStatus[status]}(${status})`);
         }
-
-        pub_msg(getEventsMsg('scan', {
-            qrcode,
-            status
-        }))
-
     })
     .on("login", (user) => {
         log.info("TestBot", `${user} login`);
-
-        pub_msg(getEventsMsg('login', {
-            user
-        }))
-
     })
     .on("logout", (user, reason) => {
         log.info("TestBot", `${user} logout, reason: ${reason}`);
-
-        pub_msg(getEventsMsg('logout', {
-            user,
-            reason
-        }))
     })
     .on("heartbeat", (data) => {
         if (heartbeatCount % 20 == 0) {
@@ -228,90 +212,8 @@ bot
         }
 
     })
-    .on('friendship', async (friendship) => {
-        let contact = friendship.contact()
-        if (friendship.type() === bot.Friendship.Type.Receive) { // 1. receive new friendship request from new contact
-            let result = await friendship.accept()
-            if (result) {
-                console.log(`Request from ${contact.name()} is accept succesfully!`)
-                let msg = `nice to meet you~`
-                await contact.say(msg)
-
-            } else {
-                console.log(`Request from ${contact.name()} failed to accept!`)
-
-            }
-
-        } else if (friendship.type() === bot.Friendship.Type.Confirm) { // 2. confirm friendship
-            console.log(`New friendship confirmed with ${contact.name()}`)
-            let msg = `nice to meet you~`
-            await contact.say(msg)
-
-        }
-
-        pub_msg(getEventsMsg('friendship', {
-            friendship
-        }))
-    })
-    .on('room-join', async (room, inviteeList, inviter) => {
-        const nameList = inviteeList.map(c => c.name()).join(',')
-        console.log(`Room ${await room.topic()} got new member ${nameList}, invited by ${inviter}`)
-
-        pub_msg(getEventsMsg('room-join', {
-            room,
-            inviteeList,
-            inviter
-        }))
-
-        let msg = `欢迎@${nameList} 加入群~`
-        // room.say(msg)
-    })
-    .on('room-leave', async (room, leaverList, remover) => {
-        const nameList = leaverList.map(c => c.name()).join(',')
-        console.log(`Room ${await room.topic()} lost member ${nameList}, the remover is: ${remover}`)
-
-        pub_msg(getEventsMsg('room-leave', {
-            room,
-            leaverList,
-            remover
-        }))
-
-        let msg = `很遗憾，${nameList}离开了群~`
-        // room.say(msg)
-
-    })
-    .on('room-topic', async (room, topic, oldTopic, changer) => {
-        console.log(`Room ${await room.topic()} topic changed from ${oldTopic} to ${topic} by ${changer.name()}`)
-
-        pub_msg(getEventsMsg('room-topic', {
-            room,
-            topic,
-            oldTopic,
-            changer
-        }))
-
-    })
-    .on('room-invite', async roomInvitation => {
-        try {
-            console.log(`received room-invite event.`)
-            await roomInvitation.accept()
-
-            pub_msg(getEventsMsg('room-invite', {
-                roomInvitation: await roomInvitation.accept()
-            }))
-
-        } catch (e) {
-            console.error(e)
-
-            pub_msg(getEventsMsg('room-invite', {
-                roomInvitation: e
-            }))
-
-        }
-    })
     .on("error", (error) => {
         log.error("TestBot", 'on error: ', error.stack);
-
         pub_msg(getEventsMsg('error', {
             error
         }))
