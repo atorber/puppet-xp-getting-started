@@ -152,7 +152,7 @@ bot
             if (type === bot.Message.Type.Image) {
                 messageType = 'Image'
                 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-                await delay(200);
+                await delay(300);
                 let file = await message.toFileBox()
                 const base64 = await file.toBase64()
                 textBox = FileBox.fromBase64(base64, file.name)
