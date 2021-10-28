@@ -3,7 +3,7 @@ const {
     log,
     Message,
     ScanStatus,
-    Wechaty,
+    WechatyBuilder,
     UrlLink,
     MiniProgram,
     MessageType
@@ -22,7 +22,7 @@ const moment = require('moment')
 const name = 'wechaty-puppet-xp';
 const puppet = new PuppetXp()
 
-const bot = new Wechaty({
+const bot = WechatyBuilder.build({
     name,
     puppet,
 });
@@ -151,6 +151,8 @@ bot
             }
             if (type === bot.Message.Type.Image) {
                 messageType = 'Image'
+                const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+                await delay(200);
                 let file = await message.toFileBox()
                 const base64 = await file.toBase64()
                 textBox = FileBox.fromBase64(base64, file.name)
@@ -179,9 +181,9 @@ bot
             let room = message.room() || {}
             room = JSON.parse(JSON.stringify(room))
 
-            if (room && room.id) {
-                delete room.payload.memberIdList
-            }
+            // if (room && room.id) {
+            //     delete room.payload.memberIdList
+            // }
 
             let payload = {
                 talker,
