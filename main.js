@@ -28,7 +28,8 @@ const bot = WechatyBuilder.build({
 });
 
 function pub_msg(payload) {
-    console.debug(payload)
+    // console.debug(JSON.parse(payload))
+    console.log(payload)
 }
 
 function pub_property() {
@@ -68,6 +69,103 @@ function guid() {
     });
 }
 
+async function onMessage(message) {
+    console.log(`RECV: ${message}`)
+    const talker = message.talker()
+    const to = message.to()
+    const type = message.type()
+    const text = message.text()
+    let messageType = ''
+    let textBox = ''
+    try {
+        if (type === bot.Message.Type.Unknown) {
+            messageType = 'Unknown'
+            textBox = '未知的消息类型'
+        }
+        if (type === bot.Message.Type.Attachment) {
+            messageType = 'Attachment'
+            let file = await message.toFileBox()
+            const base64 = await file.toBase64()
+            textBox = FileBox.fromBase64(base64, file.name)
+        }
+        if (type === bot.Message.Type.Audio) {
+            messageType = 'Audio'
+            let file = await message.toFileBox()
+            const base64 = await file.toBase64()
+            textBox = FileBox.fromBase64(base64, file.name)
+        }
+        if (type === bot.Message.Type.Contact) {
+            messageType = 'Contact'
+            // textBox = await message.toContact()
+            textBox = '联系人'
+        }
+        if (type === bot.Message.Type.Emoticon) {
+            messageType = 'Emoticon'
+            let file = await message.toFileBox()
+            const base64 = await file.toBase64()
+            textBox = FileBox.fromBase64(base64, file.name)
+        }
+        if (type === bot.Message.Type.Image) {
+            messageType = 'Image'
+            const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+            await delay(300);
+            let file = await message.toFileBox()
+            const base64 = await file.toBase64()
+            textBox = FileBox.fromBase64(base64, file.name)
+        }
+        if (type === bot.Message.Type.Text) {
+            messageType = 'Text'
+            textBox = '文本信息'
+        }
+        if (type === bot.Message.Type.Video) {
+            messageType = 'Video'
+            let file = await message.toFileBox()
+            const base64 = await file.toBase64()
+            textBox = FileBox.fromBase64(base64, file.name)
+        }
+        if (type === bot.Message.Type.Url) {
+            messageType = 'Url'
+            textBox = await message.toUrlLink()
+        }
+        if (type === bot.Message.Type.MiniProgram) {
+            messageType = 'MiniProgram'
+            textBox = await message.toMiniProgram()
+        }
+
+        console.debug('textBox:', textBox)
+
+        let room = message.room() || {}
+        room = JSON.parse(JSON.stringify(room))
+        // console.log(room)
+
+        if (room && room.id) {
+            delete room._payload.memberIdList
+        }
+
+        let payload = {
+            talker,
+            to,
+            room,
+            type,
+            messageType,
+            text,
+            message,
+            textBox
+        }
+        // console.debug(payload)
+        payload = JSON.parse(JSON.stringify(payload))
+
+        pub_msg(getEventsMsg('message', payload))
+
+        // ding/dong test
+        if (/^dong$/i.test(message.text())) {
+            await message.say('dong')
+        }
+    } catch (err) {
+        console.error(err)
+    }
+
+}
 bot
     .on("scan", (qrcode, status) => {
         if (status === ScanStatus.Waiting && qrcode) {
@@ -112,103 +210,7 @@ bot
             timeHms: moment(curTime).format("YYYY-MM-DD HH:mm:ss")
         }))
     })
-    .on("message", async (message) => {
-
-        // console.debug(message)
-        const talker = message.talker()
-        const to = message.to()
-        const type = message.type()
-        const text = message.text()
-        let messageType = ''
-        let textBox = ''
-        try {
-            if (type === bot.Message.Type.Unknown) {
-                messageType = 'Unknown'
-                textBox = '未知的消息类型'
-            }
-            if (type === bot.Message.Type.Attachment) {
-                messageType = 'Attachment'
-                let file = await message.toFileBox()
-                const base64 = await file.toBase64()
-                textBox = FileBox.fromBase64(base64, file.name)
-            }
-            if (type === bot.Message.Type.Audio) {
-                messageType = 'Audio'
-                let file = await message.toFileBox()
-                const base64 = await file.toBase64()
-                textBox = FileBox.fromBase64(base64, file.name)
-            }
-            if (type === bot.Message.Type.Contact) {
-                messageType = 'Contact'
-                // textBox = await message.toContact()
-                textBox = '联系人'
-            }
-            if (type === bot.Message.Type.Emoticon) {
-                messageType = 'Emoticon'
-                let file = await message.toFileBox()
-                const base64 = await file.toBase64()
-                textBox = FileBox.fromBase64(base64, file.name)
-            }
-            if (type === bot.Message.Type.Image) {
-                messageType = 'Image'
-                const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-                await delay(300);
-                let file = await message.toFileBox()
-                const base64 = await file.toBase64()
-                textBox = FileBox.fromBase64(base64, file.name)
-            }
-            if (type === bot.Message.Type.Text) {
-                messageType = 'Text'
-                textBox = '文本信息'
-            }
-            if (type === bot.Message.Type.Video) {
-                messageType = 'Video'
-                let file = await message.toFileBox()
-                const base64 = await file.toBase64()
-                textBox = FileBox.fromBase64(base64, file.name)
-            }
-            if (type === bot.Message.Type.Url) {
-                messageType = 'Url'
-                textBox = await message.toUrlLink()
-            }
-            if (type === bot.Message.Type.MiniProgram) {
-                messageType = 'MiniProgram'
-                textBox = await message.toMiniProgram()
-            }
-
-            console.debug('textBox:', textBox)
-
-            let room = message.room() || {}
-            room = JSON.parse(JSON.stringify(room))
-
-            // if (room && room.id) {
-            //     delete room.payload.memberIdList
-            // }
-
-            let payload = {
-                talker,
-                to,
-                room,
-                type,
-                messageType,
-                text,
-                message,
-                textBox
-            }
-            // console.debug(payload)
-            payload = JSON.parse(JSON.stringify(payload))
-
-            pub_msg(getEventsMsg('message', payload))
-
-            // ding/dong test
-            if (/^dong$/i.test(message.text())) {
-                await message.say('dong')
-            }
-        } catch (err) {
-            console.error(err)
-        }
-
-    })
+    .on("message", onMessage)
     .on("error", (error) => {
         log.error("TestBot", 'on error: ', error.stack);
         pub_msg(getEventsMsg('error', {
@@ -217,8 +219,10 @@ bot
 
     })
 
-bot
-    .start()
+bot.start()
     .then(() => {
-        log.info("TestBot", "started.");
-    });
+        return log.info('StarterBot', 'Starter Bot Started.')
+    })
+    .catch(console.error)
+
+
