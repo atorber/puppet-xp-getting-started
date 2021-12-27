@@ -1,13 +1,13 @@
 /**
- *   Wechaty - https://github.com/wechaty/wechaty
+ *   https://github.com/atorber
  *
- *   @copyright 2016-now Huan LI <zixia@zixia.net>
+ *   @copyright 2016-now atorber <atorber@163.com>
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
  *   Unless required by applicable law or agreed to in writing, software
  *   distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,6 +27,8 @@ const {
     MessageType
 } = require("wechaty");
 
+const qrcodeTerminal = require('qrcode-terminal');
+
 const {
     PuppetXp
 } = require('wechaty-puppet-xp')
@@ -38,20 +40,55 @@ const {
 const moment = require('moment')
 const mqtt = require('mqtt')
 
-const IoTCoreId = 'alvxdkj'
-const DeviceKey = '7813159edb154cb1a5c7cca80b82509f'
-const DeviceSecret = ''
+// protobuf相关配置
+var protobuf = require('protobufjs');
+var messageConfig = require('./message');
+var MessageRoot = protobuf.Root.fromJSON(messageConfig);
+var MessageMessage = MessageRoot.lookupType("Message");
 
-const username = IoTCoreId + '/' + DeviceKey
-const password = DeviceSecret
-const clientid = DeviceKey
-const host = `${IoTCoreId}.iot.gz.baidubce.com`
-const events_topic = `$iot/${DeviceKey}/events`
-const msg_topic = `$iot/${DeviceKey}/msg`
+function set_pb_msg(payload) {
+    if (payload.events) {
+        payload.events = JSON.stringify(payload.events)
+    }
+    if (payload.properties) {
+        payload.properties = JSON.stringify(payload.properties)
+    }
+    payload.timestamp = String(payload.timestamp)
+    // console.debug(payload)
+    var message = MessageMessage.create(payload);
+    var buffer = MessageMessage.encode(message).finish();
+    // console.log("buffer", buffer);
+    return buffer
+}
+
+// 维格表相关配置
+const {
+    VikaBot
+} = require('./vika')
+const VIKA_TOKEN = ''
+let vika = new VikaBot(VIKA_TOKEN)
+
+let secret = {}
+let reportList = []
+let events_topic = ''
+let msg_topic = ''
 let mqttclient = ''
 
+// 机器人相关配置
+const puppet_used = 0 //切换puppet，0-puppet-wechat 1-puppet-xp
 const name = 'mp-chat';
-const puppet = new PuppetXp()
+let puppet
+
+switch (puppet_used) {
+    case 0:
+        puppet = 'wechaty-puppet-wechat'
+        break;
+    case 1:
+        puppet = new PuppetXp()
+        break;
+    default:
+        puppet = 'wechaty-puppet-wechat'
+}
 
 const bot = WechatyBuilder.build({
     name,
@@ -96,17 +133,24 @@ async function onLogin(user) {
     console.debug(friend_contactList.length, unfriend_contactList.length)
 
     contactList = friend_contactList
-    mqtt_pub(getPropertyMsg({ contactList }))
 
     const roomList = await bot.Room.findAll()
     // console.info('roomList', JSON.stringify(roomList))
-    const userSelf =await bot.currentUser()
+    const userSelf = await bot.currentUser
     console.debug(userSelf)
     let curTime = getCurTime()
     // mqtt_pub(getEventsMsg('ready', { contactList, roomList, userSelf, lastUpdate: curTime, timeHms: moment(curTime).format("YYYY-MM-DD HH:mm:ss") }))
-    mqtt_pub(getPropertyMsg({ roomList }))
     mqtt_pub(getPropertyMsg({ userSelf }))
     mqtt_pub(getPropertyMsg({ lastUpdate: curTime, timeHms: moment(curTime).format("YYYY-MM-DD HH:mm:ss") }))
+
+    mqtt_pub(getPropertyMsg({ contactList }))
+    mqtt_pub(getPropertyMsg({ roomList }))
+
+    vika.updateBot('userSelf', JSON.stringify(userSelf))
+    vika.updateBot('lastUpdate', JSON.stringify(curTime))
+    vika.updateBot('timeHms', JSON.stringify(moment(curTime).format("YYYY-MM-DD HH:mm:ss")))
+    vika.updateBot('contactList', JSON.stringify(contactList))
+    vika.updateBot('roomList', JSON.stringify(roomList))
 
 }
 
@@ -219,7 +263,6 @@ async function onMessage(message) {
     _payload = JSON.parse(_payload)
 
     // mqttclient.publish(eventPost, getEventsMsg('message', _payload));
-
     if (!message.self()) {
         mqtt_pub(getEventsMsg('message', _payload))
     } else {
@@ -239,16 +282,6 @@ function getCurTime() {
     var offset_GMT = new Date().getTimezoneOffset(); // 本地时间和格林威治的时间差，单位为分钟
     var time = timestamp + offset_GMT * 60 * 1000 + timezone * 60 * 60 * 1000
 
-    // var y = time.getFullYear();
-    // var m = time.getMonth() + 1;
-    // var d = time.getDate();
-    // var h = time.getHours();
-    // var mm = time.getMinutes();
-    // var s = time.getSeconds();
-    // var ms = time.getMilliseconds();
-    // var sTime = y + '-' + add0(m) + '-' + add0(d) + ' ' + add0(h) + ':' + add0(mm) + ':' + add0(s);
-    // var msTime = sTime + '.' + ms;
-
     return time
 }
 
@@ -256,17 +289,38 @@ function getEventsMsg(eventName, msg) {
     let events = {}
     events[eventName] = msg
     let curTime = getCurTime()
+    let reqId = guid()
+    let timeHms = moment(curTime).format("YYYY-MM-DD HH:mm:ss")
     let _payload = {
-        "reqId": guid,
+        "reqId": reqId,
         "method": "thing.event.post",
         "version": "1.0",
         "timestamp": curTime,
-        timeHms: moment(curTime).format("YYYY-MM-DD HH:mm:ss"),
+        "timeHms": timeHms,
         "events": events
     }
-    _payload = JSON.stringify(_payload)
+
+    let records = [
+        {
+            "fields": {
+                "ID": reqId,
+                "时间": timeHms,
+                "来自": msg.talker._payload ? (msg.talker._payload.name || '我') : '--',
+                "接收": msg.room.id ? msg.room._payload.topic : '单聊',
+                "内容": msg.text,
+                "发送者ID": msg.talker.id != 'null' ? msg.talker.id : '--',
+                "接收方ID": msg.room.id ? msg.room.id : '--',
+            }
+        }
+    ]
+    if (reportList.indexOf(msg.room.id) != -1 || !msg.room.id) {
+        vika.addChatRecord(records)
+    }
+    // _payload = JSON.stringify(_payload)
+    _payload = set_pb_msg(_payload)
     // console.debug(eventName)
     // print(eventName, _payload)
+
     return _payload
 }
 
@@ -280,7 +334,8 @@ function getPropertyMsg(datas_json) {
         timeHms: moment(curTime).format("YYYY-MM-DD HH:mm:ss"),
         "properties": datas_json
     }
-    _payload = JSON.stringify(_payload)
+    // _payload = JSON.stringify(_payload)
+    _payload = set_pb_msg(_payload)
     // console.debug(eventName)
     // print(eventName, _payload)
     return _payload
@@ -501,9 +556,40 @@ function guid() {
     });
 }
 
-function main() {
+async function main() {
+    let botConfig = await vika.checkInit()
+    console.debug(botConfig)
+    secret = botConfig.secret
+    reportList = botConfig.reportList
+    // const secret = {
+    //     "airtable": {
+    //         "host": "https://api.airtable.com",
+    //         "token": "keypHmMOxLky9wU8T"
+    //     },
+    //     "mqtt": {
+    //         "DeviceKey": "7813159edb154cb1a5c7cca80b82509f",
+    //         "host": "baiduiot.iot.gz.baidubce.com",
+    //         "password": "sIQmoZzHwRYLfEUL",
+    //         "port": 443,
+    //         "username": "alvxdkj/mpclient"
+    //     },
+    //     "vika": {
+    //         "host": "https://api.airtable.com",
+    //         "token": "uskv0Tuj5MxADtcsI1C0Vkh"
+    //     }
+    // }
+    // console.debug(secret)
+
+    const DeviceKey = secret.mqtt.DeviceKey
+    const username = secret.mqtt.username
+    const password = secret.mqtt.password
+    const clientid = DeviceKey
+    const host = secret.mqtt.host
+    const port = 1883
+    events_topic = `$iot/${DeviceKey}/events`
+    msg_topic = `$iot/${DeviceKey}/msg`
     try {
-        mqttclient = mqtt.connect(`mqtt://${host}:1883`, {
+        mqttclient = mqtt.connect(`mqtt://${host}:${port}`, {
             username,
             password,
             clientId: clientid
@@ -524,9 +610,15 @@ function main() {
             })
         })
         mqttclient.on('message', async function (topic, message) {
-            console.debug('message------------------------------------------------')
+            console.debug('message------------------------------------------------', message)
             try {
-                let message_json = JSON.parse(message.toString())
+                // let message_json = JSON.parse(message.toString())
+
+                let message_json = MessageMessage.decode(message);
+                console.debug(message_json)
+                message_json.params = JSON.parse(message_json.params)
+                message_json.timestamp = Number(message_json.timestamp)
+
                 console.debug(message_json)
                 if (message_json.name == 'send') {
                     send(bot, message_json.params)
