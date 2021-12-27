@@ -561,24 +561,6 @@ async function main() {
     console.debug(botConfig)
     secret = botConfig.secret
     reportList = botConfig.reportList
-    // const secret = {
-    //     "airtable": {
-    //         "host": "https://api.airtable.com",
-    //         "token": "keypHmMOxLky9wU8T"
-    //     },
-    //     "mqtt": {
-    //         "DeviceKey": "7813159edb154cb1a5c7cca80b82509f",
-    //         "host": "baiduiot.iot.gz.baidubce.com",
-    //         "password": "sIQmoZzHwRYLfEUL",
-    //         "port": 443,
-    //         "username": "alvxdkj/mpclient"
-    //     },
-    //     "vika": {
-    //         "host": "https://api.airtable.com",
-    //         "token": "uskv0Tuj5MxADtcsI1C0Vkh"
-    //     }
-    // }
-    // console.debug(secret)
 
     const DeviceKey = secret.mqtt.DeviceKey
     const username = secret.mqtt.username
