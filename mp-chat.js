@@ -16,6 +16,8 @@
  *   limitations under the License.
  *
  */
+const { initMqtt } = require('./mqtt')
+
 const {
     Contact,
     log,
@@ -560,6 +562,7 @@ async function main() {
     let botConfig = await vika.checkInit()
     console.debug(botConfig)
     secret = botConfig.secret
+    initMqtt(this)
     reportList = botConfig.reportList
 
     const DeviceKey = secret.mqtt.DeviceKey
