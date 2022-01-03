@@ -1,177 +1,59 @@
-/**
- *   https://github.com/atorber
- *
- *   @copyright 2016-now atorber <atorber@163.com>
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
- *
- */
-
-const { Device } = require('./mp-chat/bot')
-const { Contact, log, Message, ScanStatus, WechatyBuilder, UrlLink, MiniProgram, MessageType
+const {
+    Contact,
+    log,
+    Message,
+    ScanStatus,
+    WechatyBuilder,
+    UrlLink,
+    MiniProgram,
+    MessageType
 } = require("wechaty");
-const qrcodeTerminal = require('qrcode-terminal');
-const { PuppetXp } = require('wechaty-puppet-xp')
+
+const {
+    PuppetXp
+} = require('wechaty-puppet-xp')
+
+const {
+    FileBox
+} = require('file-box')
+
 const moment = require('moment')
 
-// 维格表相关配置
-const {
-    VikaBot
-} = require('./mp-chat/vika')
-const VIKA_TOKEN = '替换为维格表token'
-let vika = new VikaBot(VIKA_TOKEN)
-
-let secret
-let reportList
-let device
-
-// 机器人相关配置
-const puppet_used = 1 //切换puppet，0-puppet-wechat 1-puppet-xp
-const name = 'mp-chat';
-let puppet
-
-switch (puppet_used) {
-    case 0:
-        puppet = 'wechaty-puppet-wechat'
-        break;
-    case 1:
-        puppet = new PuppetXp()
-        break;
-    default:
-        puppet = 'wechaty-puppet-wechat'
-}
+const name = 'wechaty-puppet-xp';
+const puppet = new PuppetXp()
 
 const bot = WechatyBuilder.build({
     name,
     puppet,
 });
 
-function onScan(qrcode, status) {
-    if (status === ScanStatus.Waiting || status === ScanStatus.Timeout) {
-        qrcodeTerminal.generate(qrcode, { small: true })  // show qrcode on console
-
-        const qrcodeImageUrl = [
-            'https://wechaty.js.org/qrcode/',
-            encodeURIComponent(qrcode),
-        ].join('')
-
-        log.info('StarterBot', 'onScan: %s(%s) - %s', ScanStatus[status], status, qrcodeImageUrl)
-
-    } else {
-        log.info('StarterBot', 'onScan: %s(%s)', ScanStatus[status], status)
-    }
+function pub_msg(payload) {
+    // console.debug(JSON.parse(payload))
+    console.log(payload)
 }
 
-async function onLogin(user) {
-    log.info('StarterBot', '%s login', user)
-    let contactList = await bot.Contact.findAll()
-    let friend_contactList = []
-    let unfriend_contactList = []
+function pub_property() {
+    console.debug(payload)
+}
 
-    // console.info('contactList', JSON.stringify(contactList))
-
-    for (let i = 0; i < contactList.length; i++) {
-        if (contactList[i].friend()) {
-            // console.debug(contactList[i])
-            friend_contactList.push(contactList[i])
-        } else {
-            // console.debug(contactList[i].id)
-            unfriend_contactList.push(contactList[i])
-        }
-    }
-    // console.debug(unfriend_contactList)
-
-    console.debug(friend_contactList.length, unfriend_contactList.length)
-
-    contactList = friend_contactList
-
-    const roomList = await bot.Room.findAll()
-    // console.info('roomList', JSON.stringify(roomList))
-    const userSelf = await bot.currentUser
-    console.debug(userSelf)
+function getEventsMsg(eventName, msg) {
+    let events = {}
+    events[eventName] = msg
     let curTime = getCurTime()
-
-    // mqtt_pub(getPropertyMsg({ userSelf }))
-    // mqtt_pub(getPropertyMsg({ lastUpdate: curTime, timeHms: moment(curTime).format("YYYY-MM-DD HH:mm:ss") }))
-    // mqtt_pub(getPropertyMsg({ contactList }))
-    // mqtt_pub(getPropertyMsg({ roomList }))
-
-    device.pub_property('userSelf', userSelf)
-    device.pub_property('lastUpdate', curTime)
-    device.pub_property('timeHms', moment(curTime).format("YYYY-MM-DD HH:mm:ss"))
-    device.pub_property('contactList', contactList)
-    device.pub_property('roomList', roomList)
-
-
-    vika.updateBot('userSelf', JSON.stringify(userSelf))
-    vika.updateBot('lastUpdate', JSON.stringify(curTime))
-    vika.updateBot('timeHms', JSON.stringify(moment(curTime).format("YYYY-MM-DD HH:mm:ss")))
-    vika.updateBot('contactList', JSON.stringify(contactList))
-    vika.updateBot('roomList', JSON.stringify(roomList))
-
-}
-
-async function onReady() {
-    let contactList = await bot.Contact.findAll()
-    let friend_contactList = []
-    let unfriend_contactList = []
-
-    // console.info('contactList', JSON.stringify(contactList))
-
-    for (let i = 0; i < contactList.length; i++) {
-        if (contactList[i].friend()) {
-            // console.debug(contactList[i])
-            friend_contactList.push(contactList[i])
-        } else {
-            // console.debug(contactList[i].id)
-            unfriend_contactList.push(contactList[i])
-        }
+    let payload = {
+        "reqId": guid,
+        "method": "thing.event.post",
+        "version": "1.0",
+        "timestamp": curTime,
+        timeHms: moment(curTime).format("YYYY-MM-DD HH:mm:ss"),
+        "events": events
     }
-    // console.debug(unfriend_contactList)
-
-    console.debug(friend_contactList.length, unfriend_contactList.length)
-
-    // contactList = friend_contactList
-    // mqtt_pub(getPropertyMsg({ contactList }))
-
-    const roomList = await bot.Room.findAll()
-    // console.info('roomList', JSON.stringify(roomList))
-    const userSelf = await bot.Contact.find(bot.currentUser)
-    console.debug(userSelf)
-
-}
-
-function onLogout(user) {
-    log.info('StarterBot', '%s logout', user)
-}
-
-async function onMessage(message) {
-    // console.debug(message)
-    let room = message.room() || {}
-    device.pub_message(message)
-
-    if (!room.id || reportList.indexOf(room.id) != -1) {
-        vika.addChatRecord(message)
-    }
-
-    // ding/dong test
-    if (/^ding$/i.test(message.text())) {
-        await message.say('dong')
-    }
+    payload = JSON.stringify(payload)
+    // console.debug(eventName)
+    return payload
 }
 
 function getCurTime() {
-    //timestamp是整数，否则要parseInt转换
     let timestamp = new Date().getTime()
     var timezone = 8; //目标时区时间，东八区
     var offset_GMT = new Date().getTimezoneOffset(); // 本地时间和格林威治的时间差，单位为分钟
@@ -179,38 +61,168 @@ function getCurTime() {
     return time
 }
 
-async function main() {
-    let botConfig = await vika.checkInit()
-    console.debug(botConfig)
-    secret = botConfig.secret
-    reportList = botConfig.reportList
-
-    const username = secret.mqtt.username
-    const password = secret.mqtt.password
-    const clientId = secret.mqtt.DeviceKey
-    const host = secret.mqtt.host
-    const port = 1883
-
-    device = new Device(host, port, username, password, clientId)
-    device.init()
-
-    bot
-        .on("scan", onScan)
-        .on("login", onLogin)
-        .on("logout", onLogout)
-        .on("message", onMessage)
-        .on("ready", onReady)
-        .on("error", (error) => {
-            log.error("TestBot", 'on error: ', error.stack);
-        })
-        .start()
-        .then(() => {
-            log.info("TestBot", "started.");
-        })
-        .catch(e => log.error('StarterBot', e));
-    device.sub_command(bot)
+function guid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0,
+            v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
 }
 
-// 运行主程序
-main()
+async function onMessage(message) {
+    console.log(`RECV: ${message}`)
+    const talker = message.talker()
+    const to = message.to()
+    const type = message.type()
+    const text = message.text()
+    let messageType = ''
+    let textBox = ''
+    try {
+        if (type === bot.Message.Type.Unknown) {
+            messageType = 'Unknown'
+            textBox = '未知的消息类型'
+        }
+        if (type === bot.Message.Type.Attachment) {
+            messageType = 'Attachment'
+            let file = await message.toFileBox()
+            const base64 = await file.toBase64()
+            textBox = FileBox.fromBase64(base64, file.name)
+        }
+        if (type === bot.Message.Type.Audio) {
+            messageType = 'Audio'
+            let file = await message.toFileBox()
+            const base64 = await file.toBase64()
+            textBox = FileBox.fromBase64(base64, file.name)
+        }
+        if (type === bot.Message.Type.Contact) {
+            messageType = 'Contact'
+            // textBox = await message.toContact()
+            textBox = '联系人'
+        }
+        if (type === bot.Message.Type.Emoticon) {
+            messageType = 'Emoticon'
+            let file = await message.toFileBox()
+            const base64 = await file.toBase64()
+            textBox = FileBox.fromBase64(base64, file.name)
+        }
+        if (type === bot.Message.Type.Image) {
+            messageType = 'Image'
+            const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+            await delay(300);
+            let file = await message.toFileBox()
+            const base64 = await file.toBase64()
+            textBox = FileBox.fromBase64(base64, file.name)
+        }
+        if (type === bot.Message.Type.Text) {
+            messageType = 'Text'
+            textBox = '文本信息'
+        }
+        if (type === bot.Message.Type.Video) {
+            messageType = 'Video'
+            let file = await message.toFileBox()
+            const base64 = await file.toBase64()
+            textBox = FileBox.fromBase64(base64, file.name)
+        }
+        if (type === bot.Message.Type.Url) {
+            messageType = 'Url'
+            textBox = await message.toUrlLink()
+        }
+        if (type === bot.Message.Type.MiniProgram) {
+            messageType = 'MiniProgram'
+            textBox = await message.toMiniProgram()
+        }
+
+        console.debug('textBox:', textBox)
+
+        let room = message.room() || {}
+        room = JSON.parse(JSON.stringify(room))
+        // console.log(room)
+
+        if (room && room.id) {
+            delete room._payload.memberIdList
+        }
+
+        let payload = {
+            talker,
+            to,
+            room,
+            type,
+            messageType,
+            text,
+            message,
+            textBox
+        }
+        // console.debug(payload)
+        payload = JSON.parse(JSON.stringify(payload))
+
+        pub_msg(getEventsMsg('message', payload))
+
+        // ding/dong test
+        if (/^dong$/i.test(message.text())) {
+            await message.say('dong')
+        }
+    } catch (err) {
+        console.error(err)
+    }
+
+}
+bot
+    .on("scan", (qrcode, status) => {
+        if (status === ScanStatus.Waiting && qrcode) {
+            const qrcodeImageUrl = [
+                'https://wechaty.js.org/qrcode/',
+                encodeURIComponent(qrcode),
+            ].join('')
+
+            pub_property({
+                qrcodeImageUrl
+            })
+
+            log.info("TestBot", `onScan: ${ScanStatus[status]}(${status}) - ${qrcodeImageUrl}`);
+
+            require('qrcode-terminal').generate(qrcode, {
+                small: true
+            }) // show qrcode on console
+        } else {
+            log.info("TestBot", `onScan: ${ScanStatus[status]}(${status})`);
+        }
+    })
+    .on("login", (user) => {
+        log.info("TestBot", `${user} login`);
+    })
+    .on("logout", (user, reason) => {
+        log.info("TestBot", `${user} logout, reason: ${reason}`);
+    })
+    .on("heartbeat", (data) => {
+        if (heartbeatCount % 20 == 0) {
+            let curTime = getCurTime()
+            pub_property({
+                lastUpdate: curTime,
+                timeHms: moment(curTime).format("YYYY-MM-DD HH:mm:ss")
+            })
+        }
+        heartbeatCount = heartbeatCount + 1
+    })
+    .on("ready", async () => {
+        let curTime = getCurTime()
+        pub_msg(getEventsMsg('ready', {
+            lastUpdate: curTime,
+            timeHms: moment(curTime).format("YYYY-MM-DD HH:mm:ss")
+        }))
+    })
+    .on("message", onMessage)
+    .on("error", (error) => {
+        log.error("TestBot", 'on error: ', error.stack);
+        pub_msg(getEventsMsg('error', {
+            error
+        }))
+
+    })
+
+bot.start()
+    .then(() => {
+        return log.info('StarterBot', 'Starter Bot Started.')
+    })
+    .catch(console.error)
+
 
