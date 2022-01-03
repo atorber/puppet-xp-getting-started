@@ -28,7 +28,7 @@ const moment = require('moment')
 const {
     VikaBot
 } = require('./mp-chat/vika')
-const VIKA_TOKEN = ''
+const VIKA_TOKEN = '替换为维格表token'
 let vika = new VikaBot(VIKA_TOKEN)
 
 let secret
