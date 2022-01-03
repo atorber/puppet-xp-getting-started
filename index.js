@@ -17,8 +17,6 @@ const {
     FileBox
 } = require('file-box')
 
-const moment = require('moment')
-
 const name = 'wechaty-puppet-xp';
 const puppet = new PuppetXp()
 
@@ -26,48 +24,6 @@ const bot = WechatyBuilder.build({
     name,
     puppet,
 });
-
-function pub_msg(payload) {
-    // console.debug(JSON.parse(payload))
-    console.log(payload)
-}
-
-function pub_property() {
-    console.debug(payload)
-}
-
-function getEventsMsg(eventName, msg) {
-    let events = {}
-    events[eventName] = msg
-    let curTime = getCurTime()
-    let payload = {
-        "reqId": guid,
-        "method": "thing.event.post",
-        "version": "1.0",
-        "timestamp": curTime,
-        timeHms: moment(curTime).format("YYYY-MM-DD HH:mm:ss"),
-        "events": events
-    }
-    payload = JSON.stringify(payload)
-    // console.debug(eventName)
-    return payload
-}
-
-function getCurTime() {
-    let timestamp = new Date().getTime()
-    var timezone = 8; //目标时区时间，东八区
-    var offset_GMT = new Date().getTimezoneOffset(); // 本地时间和格林威治的时间差，单位为分钟
-    var time = timestamp + offset_GMT * 60 * 1000 + timezone * 60 * 60 * 1000
-    return time
-}
-
-function guid() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = Math.random() * 16 | 0,
-            v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
-}
 
 async function onMessage(message) {
     console.log(`RECV: ${message}`)
@@ -152,10 +108,7 @@ async function onMessage(message) {
             message,
             textBox
         }
-        // console.debug(payload)
-        payload = JSON.parse(JSON.stringify(payload))
-
-        pub_msg(getEventsMsg('message', payload))
+        console.debug(payload)  
 
         // ding/dong test
         if (/^dong$/i.test(message.text())) {
@@ -174,10 +127,6 @@ bot
                 encodeURIComponent(qrcode),
             ].join('')
 
-            pub_property({
-                qrcodeImageUrl
-            })
-
             log.info("TestBot", `onScan: ${ScanStatus[status]}(${status}) - ${qrcodeImageUrl}`);
 
             require('qrcode-terminal').generate(qrcode, {
@@ -194,32 +143,20 @@ bot
         log.info("TestBot", `${user} logout, reason: ${reason}`);
     })
     .on("heartbeat", (data) => {
-        if (heartbeatCount % 20 == 0) {
-            let curTime = getCurTime()
-            pub_property({
-                lastUpdate: curTime,
-                timeHms: moment(curTime).format("YYYY-MM-DD HH:mm:ss")
-            })
-        }
-        heartbeatCount = heartbeatCount + 1
+        console.debug('on heartbeat:',data)
+
     })
     .on("ready", async () => {
-        let curTime = getCurTime()
-        pub_msg(getEventsMsg('ready', {
-            lastUpdate: curTime,
-            timeHms: moment(curTime).format("YYYY-MM-DD HH:mm:ss")
-        }))
+        console.debug('on ready')
+
     })
     .on("message", onMessage)
     .on("error", (error) => {
         log.error("TestBot", 'on error: ', error.stack);
-        pub_msg(getEventsMsg('error', {
-            error
-        }))
-
     })
 
-bot.start()
+bot
+    .start()
     .then(() => {
         return log.info('StarterBot', 'Starter Bot Started.')
     })
