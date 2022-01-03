@@ -33,10 +33,5 @@
   },
   "scripts": {
     "start": "node main.js"
-  },
-  "git": {
-    "scripts": {
-      "pre-push": "npx git-scripts-pre-push"
-    }
   }
 }
