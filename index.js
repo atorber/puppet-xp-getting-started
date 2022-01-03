@@ -28,7 +28,7 @@ const moment = require('moment')
 const {
     VikaBot
 } = require('./mp-chat/vika')
-const VIKA_TOKEN = 'uskv0Tuj5MxADtcsI1C0Vkh'
+const VIKA_TOKEN = ''
 let vika = new VikaBot(VIKA_TOKEN)
 
 let secret
