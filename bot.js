@@ -37,6 +37,7 @@ class Device {
         })
         this.mqttclient.on('message', async function (topic, message) {
             const content = JSON.parse(message.toString())
+            console.debug(content)
             const name = content.name
             const params = content.params
 
