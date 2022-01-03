@@ -32,6 +32,7 @@
     "wechaty-puppet-mock": "^1.10.2"
   },
   "scripts": {
-    "start": "node main.js"
+    "start": "node main.js",
+    "start:mp": "node index.js"
   }
 }
