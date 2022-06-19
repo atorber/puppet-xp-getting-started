@@ -7,9 +7,9 @@
 
 ### 2. 安装并检查当前nodejs环境
 [下载安装16LTS版本nodejs](https://nodejs.org/)
-检查node版本：
+检查node版本 >= v16.0.0
 ```
-$ node --version // >= v16.0.0
+$ node -v
 ``` 
 ### 3. 下载demo代码 [wechaty-puppet-xp-demo](https://github.com/xp/wechaty-puppet-xp-demo) 
 
@@ -55,6 +55,10 @@ Puppet|xp👍
 **<其他>**|
 登录事件|✅
 依赖协议|Windows
+
+## 相关项目
+
+- [wechat-openai-qa-bot](https://github.com/choogoo/wechat-openai-qa-bot)
 
 ## 参考
 

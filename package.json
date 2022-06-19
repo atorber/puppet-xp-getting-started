@@ -7,12 +7,15 @@
   "dependencies": {
     "qrcode-terminal": "^0.12.0",
     "wechaty": "^1.18.1",
-    "wechaty-puppet-xp": "^1.10.27"
+    "wechaty-puppet": "^1.18.3",
+    "wechaty-puppet-xp": "^1.11.13"
   },
   "devDependencies": {
     "@chatie/eslint-config": "^1.0.4",
     "@chatie/git-scripts": "^0.6.2",
     "@chatie/tsconfig": "^4.6.2",
+    "@types/node": "^18.0.0",
+    "@types/qrcode-terminal": "^0.12.0",
     "check-node-version": "^4.2.1",
     "is-pr": "^2.0.0",
     "ts-node": "^9.1.1",
