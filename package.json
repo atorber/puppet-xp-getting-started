@@ -24,10 +24,5 @@
   },
   "scripts": {
     "start": "node index.js"
-  },
-  "git": {
-    "scripts": {
-      "pre-push": "npx git-scripts-pre-push"
-    }
   }
 }
