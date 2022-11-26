@@ -3,7 +3,7 @@
 **wechaty-puppet-xp仅支持windows操作系统下使用**
 
 ### 1. 下载微信客户端并登陆
-下载 [WeChatSetup-v3.3.0.115](https://github.com/wechaty/wechaty-puppet-xp/releases/download/v0.5/WeChatSetup-v3.3.0.115.exe) 版本的PC微信客户端并**登陆微信**
+下载 [WeChatSetup-v3.6.0.18.exe](https://github.com/tom-snow/wechat-windows-versions/releases/tag/v3.6.0.18) 版本的PC微信客户端并**登陆微信**
 
 ### 2. 安装并检查当前nodejs环境
 [下载安装16LTS版本nodejs](https://nodejs.org/)

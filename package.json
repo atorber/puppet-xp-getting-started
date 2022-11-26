@@ -8,7 +8,7 @@
     "qrcode-terminal": "^0.12.0",
     "wechaty": "^1.18.1",
     "wechaty-puppet": "^1.18.3",
-    "wechaty-puppet-xp": "^1.11.13"
+    "wechaty-puppet-xp": "^1.12.3"
   },
   "devDependencies": {
     "@chatie/eslint-config": "^1.0.4",
@@ -24,5 +24,10 @@
   },
   "scripts": {
     "start": "node index.js"
+  },
+  "git": {
+    "scripts": {
+      "pre-push": "npx git-scripts-pre-push"
+    }
   }
 }
