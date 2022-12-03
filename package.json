@@ -1,28 +1,39 @@
 {
   "name": "wechaty-puppet-xp-demo",
-  "version": "0.1.2",
+  "version": "0.2.2",
   "description": "Demo for wechaty-puppet-xp",
   "author": "atorber",
   "license": "Apache-2.0",
+  "type": "module",
+  "engines": {
+    "node": ">=16",
+    "npm": ">=7"
+  },
   "scripts": {
-    "start": "node index.js"
+    "start:js": "node ./examples/ding-dong-bot.js",
+    "start": "cross-env NODE_OPTIONS=\"--no-warnings --loader=ts-node/esm\" node ding-dong-bot.ts",
+    "api": "cross-env NODE_OPTIONS=\"--no-warnings --loader=ts-node/esm\" node ./examples/api-support-list.ts",
+    "build": "tsc",
+    "lint": "eslint \"examples/*.ts\" \"tests/*.ts\""
   },
   "dependencies": {
+    "dotenv": "^16.0.0",
     "qrcode-terminal": "^0.12.0",
-    "wechaty": "^1.18.1",
-    "wechaty-puppet": "^1.18.3",
-    "wechaty-puppet-xp": "^1.12.3"
+    "wechaty": "^1.20.2",
+    "wechaty-puppet-xp": "^1.12.6"
   },
   "devDependencies": {
     "@chatie/eslint-config": "^1.0.4",
     "@chatie/git-scripts": "^0.6.2",
-    "@chatie/tsconfig": "^4.6.2",
-    "@types/node": "^18.0.0",
+    "@chatie/tsconfig": "^4.6.3",
     "@types/qrcode-terminal": "^0.12.0",
     "check-node-version": "^4.2.1",
     "is-pr": "^2.0.0",
-    "ts-node": "^9.1.1",
-    "typescript": "^4.1.5",
-    "wechaty-puppet-mock": "^1.10.2"
+    "wechaty-puppet-mock": "^1.18.2"
+  },
+  "git": {
+    "scripts": {
+      "pre-push": "npx git-scripts-pre-push"
+    }
   }
 }

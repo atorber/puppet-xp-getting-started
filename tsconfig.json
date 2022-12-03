@@ -14,7 +14,7 @@
     "bot/**/*.ts",
     "examples/**/*.ts",
     "scripts/**/*.ts",
-    "src/**/*.ts",
+    "examples/**/*.ts",
     "tests/**/*.spec.ts",
     "*.ts"
   ],

@@ -1,17 +1,26 @@
 ## 快速开始
 
-**wechaty-puppet-xp仅支持windows操作系统下使用**
+**wechaty-puppet-xp仅支持windows操作系统下使用,微信客户端支持：**
 
-### 1. 下载微信客户端并登陆
-下载 [WeChatSetup-v3.6.0.18.exe](https://github.com/tom-snow/wechat-windows-versions/releases/tag/v3.6.0.18) 版本的PC微信客户端并**登陆微信**
+|wechaty-puppet-xp版本|支持的微信客户端版本|说明|
+|--|--|--|
+|v1.12.6+|v3.6.0.18|最新版本的puppet-xp已支持v3.6.0.18版本的微信客户端，还在迭代中，不够稳定，可尝鲜<br>`npm run wechaty-puppet-xp@1.12.6`或`npm run wechaty-puppet-xp@latest`|
+|v1.11.14|v3.3.0.115|此版本是目前最稳定的puppet-xp版本，虽然微信版本低，但是稳定使用时建议优先使用<br>`npm run wechaty-puppet-xp@1.11.14`|
+
+### 1. 检查微信客户端并登陆
+
+检查电脑上微信版本是否是支持的版本（如果不是必须下载指定版，如果是则不需要重新安装），正常**登陆微信**
+
+  [WeChatSetup-v3.6.0.18.exe](https://github.com/tom-snow/wechat-windows-versions/releases/tag/v3.6.0.18)
+
+  [WeChatSetup-v3.3.0.115.exe](https://github.com/wechaty/wechaty-puppet-xp/releases/download/v0.5/WeChatSetup-v3.3.0.115.exe)
 
 ### 2. 安装并检查当前nodejs环境
-[下载安装16LTS版本nodejs](https://nodejs.org/)
-检查node版本 >= v16.0.0
+[下载安装16LTS版本nodejs](https://nodejs.org/)，检查node版本 >= v16.0.0
 ```
 $ node -v
 ``` 
-### 3. 下载demo代码 [wechaty-puppet-xp-demo](https://github.com/xp/wechaty-puppet-xp-demo) 
+### 3. 下载demo代码 [wechaty-puppet-xp-demo](https://github.com/atorber/wechaty-puppet-xp-demo) 
 
 ```
 $ git clone https://github.com/atorber/wechaty-puppet-xp-demo.git
@@ -31,32 +40,15 @@ $ npm install
 $ npm run start
 ```
 
-## 特性列表
-
-Puppet|xp👍
-:---|:---:
-支持账号|个人微信
-**<消息>**|
-收发文本|✅|
-发送图片、文件|✅
-接收图片、文件|✅
-接收动图|✅
-发送动图|✅（以文件形式发送）
-转发文本|✅
-转发图片|✅
-**<群组>**|
-@群成员|✅
-群列表|✅
-群成员列表|✅
-群详情|✅
-**<联系人>**|
-好友列表|✅
-好友详情|✅
-**<其他>**|
-登录事件|✅
-依赖协议|Windows
+| 运行 | 对应程序 | 说明 |
+| :------------- |:-------------| :-----|
+| `npm start` | [examples/ding-dong-bot.ts](examples/ding-dong-bot.ts) | ts代码示例 |
+| `npm run start:js` | [examples/ding-dong-bot.js](examples/ding-dong-bot.js) | js代码示例 |
+| `npm run api` | [examples/api-support-list.ts](examples/api-support-list.ts) | wechaty-api支持检测，可以查看当前版本puppet-xp已经实现的接口 |
 
 ## 相关项目
+
+- [wechaty-puppet-xp](https://github.com/wechaty/puppet-xp)
 
 - [wechat-openai-qa-bot](https://github.com/choogoo/wechat-openai-qa-bot)
 
@@ -66,4 +58,4 @@ Puppet|xp👍
 - [全新的Windows puppet项目wechaty-puppet-xp启动, @atorber, Jul 13, 2021](https://wechaty.js.org/2021/07/13/wechaty-puppet-xp-start-up/)
 - [code如诗，bot如歌，由Wechaty引发的一个小白冒险之旅, @老张学技术, Jul 05, 2021](https://wechaty.js.org/2021/07/05/code-like-poetry-bot-like-song/)
 
-Official website<https://wechaty.js.org/docs/puppet-providers/xp>
+- [Wechaty Official Website](https://wechaty.js.org/docs/puppet-providers/xp)
