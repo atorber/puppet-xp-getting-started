@@ -2,7 +2,7 @@
 
 **wechaty-puppet-xp仅支持windows操作系统下使用,微信客户端支持：**
 
-|wechaty-puppet-xp版本|支持的微信客户端版本|说明|
+|puppet-xp版本|微信客户端|说明|
 |--|--|--|
 |v1.12.6+|v3.6.0.18|最新版本的puppet-xp已支持v3.6.0.18版本的微信客户端，还在迭代中，不够稳定，可尝鲜<br>`npm run wechaty-puppet-xp@1.12.6`或`npm run wechaty-puppet-xp@latest`|
 |v1.11.14|v3.3.0.115|此版本是目前最稳定的puppet-xp版本，虽然微信版本低，但是稳定使用时建议优先使用<br>`npm run wechaty-puppet-xp@1.11.14`|
