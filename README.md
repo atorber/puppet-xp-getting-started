@@ -48,9 +48,11 @@ $ npm run start
 
 ## 相关项目
 
-- [wechaty-puppet-xp项目源码](https://github.com/wechaty/puppet-xp)
+- [wechaty/getting-started 更多wechaty-puppet](https://github.com/wechaty/getting-started)
 
-- [wechat-openai-qa-bot智能问答系统](https://github.com/choogoo/wechat-openai-qa-bot)
+- [wechaty-puppet-xp 项目源码](https://github.com/wechaty/puppet-xp)
+
+- [wechat-openai-qa-bot 智能问答系统](https://github.com/choogoo/wechat-openai-qa-bot)
 
 ## 参考
 
