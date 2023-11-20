@@ -51,11 +51,11 @@ $ npm run start
 
 ## 相关项目
 
-- [wechaty/getting-started 更多wechaty-puppet](https://github.com/wechaty/getting-started)
+- [wechaty/getting-started](https://github.com/wechaty/getting-started) 更多wechaty-puppet
 
-- [wechaty-puppet-xp 项目源码](https://github.com/wechaty/puppet-xp)
+- [wechaty-puppet-xp](https://github.com/wechaty/puppet-xp) 项目源码
 
-- [wechat-openai-qa-bot 智能问答系统](https://github.com/choogoo/wechat-openai-qa-bot)
+- [wechat-openai-qa-bot](https://github.com/choogoo/wechat-openai-qa-bot) 智能问答系统
 
 ## 参考
 
