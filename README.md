@@ -4,7 +4,7 @@
 
 |puppet-xp版本|微信客户端|说明|
 |--|--|--|
-|v1.13.x|v3.9.2.23|最新版本的puppet-xp已支持v3.9.2.23版本的微信客户端<br>还在迭代中，不够稳定，可尝鲜<br>`npm i wechaty-puppet-xp@1.13.2`或`npm i wechaty-puppet-xp@next`|
+|v1.13.x|v3.9.2.23|最新版本的puppet-xp已支持v3.9.2.23版本的微信客户端<br>还在迭代中，不够稳定，可尝鲜<br>`npm i wechaty-puppet-xp@1.13.1`或`npm i wechaty-puppet-xp@next`|
 |v1.12.x|v3.6.0.18|此版本是目前最稳定的puppet-xp版本<br>虽然微信版本适中，稳定使用时建议优先使用<br>`npm i wechaty-puppet-xp@1.12.7`|
 |v1.11.14|v3.3.0.115|此版本是稳定的puppet-xp版本<br>虽然微信版本低，但是稳定使用时建议优先使用<br>`npm i wechaty-puppet-xp@1.11.14`|
 
