@@ -4,12 +4,15 @@
 
 |puppet-xp版本|微信客户端|说明|
 |--|--|--|
-|v1.12.x|v3.6.0.18|最新版本的puppet-xp已支持v3.6.0.18版本的微信客户端<br>还在迭代中，不够稳定，可尝鲜<br>`npm i wechaty-puppet-xp@1.12.6`或`npm i wechaty-puppet-xp@latest`|
-|v1.11.14|v3.3.0.115|此版本是目前最稳定的puppet-xp版本<br>虽然微信版本低，但是稳定使用时建议优先使用<br>`npm i wechaty-puppet-xp@1.11.14`|
+|v1.13.x|v3.9.2.23|最新版本的puppet-xp已支持v3.9.2.23版本的微信客户端<br>还在迭代中，不够稳定，可尝鲜<br>`npm i wechaty-puppet-xp@1.13.2`或`npm i wechaty-puppet-xp@next`|
+|v1.12.x|v3.6.0.18|此版本是目前最稳定的puppet-xp版本<br>虽然微信版本适中，稳定使用时建议优先使用<br>`npm i wechaty-puppet-xp@1.12.7`|
+|v1.11.14|v3.3.0.115|此版本是稳定的puppet-xp版本<br>虽然微信版本低，但是稳定使用时建议优先使用<br>`npm i wechaty-puppet-xp@1.11.14`|
 
 ### 1. 检查微信客户端并登陆
 
 检查电脑上微信版本是否是支持的版本（如果不是必须下载指定版，如果是则不需要重新安装），正常**登陆微信**
+
+  [WeChatSetup-v3.9.2.23.exe](https://github.com/tom-snow/wechat-windows-versions/releases/download/v3.9.2.23/WeChatSetup-3.9.2.23.exe)
 
   [WeChatSetup-v3.6.0.18.exe](https://github.com/tom-snow/wechat-windows-versions/releases/tag/v3.6.0.18)
 
