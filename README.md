@@ -9,6 +9,11 @@
 
 本项目是基于开源聊天机器人社区[Wechaty](https://github.com/wechaty)的[puppet-xp](https://github.com/wechaty/puppet-xp)项目开发微信聊天机器人快速入门和最佳实践，支持Windows微信客户端3.3.0.115，3.6.0.18, 3.9.2.23版本。
 
+优点：
+
+- 一键运行，免dll注入
+- Wechaty社区支持
+
 ## 免责声明
 
 本仓库发布的内容，仅用于学习研究，请勿用于非法用途和商业用途！如因此产生任何法律纠纷，均与作者无关！
