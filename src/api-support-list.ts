@@ -211,21 +211,21 @@ async function onMessage(message: Message) {
 
   if (/^miniprogram$/i.test(message.text())) {
     const miniProgram = new bot.MiniProgram({
-      "appid":"wx2672757b4553d5d7",
-      "username":"gh_b5403cc2567a@app",
-      "title":"老板，跟团成功了，期待早日收到货～",
-      "description":"快团团",
-      "pagePath":"pages/activity/activity.html?collection_activity_no=09q1pnruc-iaYtsgvybo27McLJakXiqA&_x_group_user_no=9oQOSQZWvnckqQCQ2NxQfg%3D%3D&_kttpay_tr_sc=20&_x_rec_universal_src=24&_x_open_g_id=8fT24HFUKmI4vEbWSwGUXeKLn3-Vi2xLVZ6ph3ykqJc&ref_share_uid=6476598635&ref_share_user_no=r%2FRAJBK02Ly2uwEiZDGmwA%3D%3D&ref_share_channel=message&ref_share_id=09b1413a-fc4a-4b19-85d4-312d6ad4f835",
-      "iconUrl":"http://wx.qlogo.cn/mmhead/Q3auHgzwzM7vHclwjpAEVQaRS84MiaickACFFbiaOHvQIold00TeM5lxQ/96",
-      "shareId":"1_wx2672757b4553d5d7_b7c8b70984122729d25b1e5b3555af9f_1651587810_0",
-      "thumbUrl":"3057020100044b304902010002040082c1ed02032f4f560204107bc2dc0204627177fc042465326633663036612d643335312d346265372d393434302d3738396630663534393562380204011400030201000405004c52ae00",
-      "thumbKey":"50bf1931a24f38414d8f62d2166bde65"
-  });
+      "appid": "wx2672757b4553d5d7",
+      "username": "gh_b5403cc2567a@app",
+      "title": "老板，跟团成功了，期待早日收到货～",
+      "description": "快团团",
+      "pagePath": "pages/activity/activity.html?collection_activity_no=09q1pnruc-iaYtsgvybo27McLJakXiqA&_x_group_user_no=9oQOSQZWvnckqQCQ2NxQfg%3D%3D&_kttpay_tr_sc=20&_x_rec_universal_src=24&_x_open_g_id=8fT24HFUKmI4vEbWSwGUXeKLn3-Vi2xLVZ6ph3ykqJc&ref_share_uid=6476598635&ref_share_user_no=r%2FRAJBK02Ly2uwEiZDGmwA%3D%3D&ref_share_channel=message&ref_share_id=09b1413a-fc4a-4b19-85d4-312d6ad4f835",
+      "iconUrl": "http://wx.qlogo.cn/mmhead/Q3auHgzwzM7vHclwjpAEVQaRS84MiaickACFFbiaOHvQIold00TeM5lxQ/96",
+      "shareId": "1_wx2672757b4553d5d7_b7c8b70984122729d25b1e5b3555af9f_1651587810_0",
+      "thumbUrl": "3057020100044b304902010002040082c1ed02032f4f560204107bc2dc0204627177fc042465326633663036612d643335312d346265372d393434302d3738396630663534393562380204011400030201000405004c52ae00",
+      "thumbKey": "50bf1931a24f38414d8f62d2166bde65"
+    });
 
     await message.say(miniProgram);
   }
 
-  if (message.type() === types.Message.Image&&false) {
+  if (message.type() === types.Message.Image && false) {
 
     const img = await message.toImage()
     const thumbFile = await img.thumbnail()

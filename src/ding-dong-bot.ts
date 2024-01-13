@@ -50,7 +50,10 @@ async function onMessage (msg: Message) {
 
 const bot = WechatyBuilder.build({
   name: 'ding-dong-bot',
-  puppet: 'wechaty-puppet-xp'
+  puppet: 'wechaty-puppet-xp',
+  puppetOptions: {
+    version: '3.9.2.23',
+  }
 })
 
 bot.on('scan',    onScan)
