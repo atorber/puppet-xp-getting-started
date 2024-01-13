@@ -3,6 +3,7 @@
 [![Powered by Wechaty](https://img.shields.io/badge/Powered%20By-atorber-brightgreen.svg)](https://github.com/atorber/puppet-xp-getting-started)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-blue.svg)](https://www.typescriptlang.org/)
 [![GitHub stars](https://img.shields.io/github/stars/atorber/puppet-xp-getting-started.svg?label=github%20stars)](https://github.com/atorber/puppet-xp-getting-started)
+ <img alt="GitHub forks badge" src="https://img.shields.io/github/forks/atorber/puppet-xp-getting-started">
 
 ## 简介
 
@@ -461,3 +462,5 @@ puppet-xp|微信客户端下载|npm包安装|
 - [code如诗，bot如歌，由Wechaty引发的一个小白冒险之旅, @老张学技术, Jul 05, 2021](https://wechaty.js.org/2021/07/05/code-like-poetry-bot-like-song/)
 
 - [Wechaty Official Website](https://wechaty.js.org/docs/puppet-providers/xp)
+
+ [![Star History Chart](https://api.star-history.com/svg?repos=atorber/puppet-xp-getting-started&type=Date)](https://star-history.com/#atorber/puppet-xp-getting-started&Date)
