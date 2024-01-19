@@ -8,8 +8,8 @@
 import 'dotenv/config.js'
 
 import {
-  Contact,
-  Message,
+  type Contact,
+  type Message,
   ScanStatus,
   WechatyBuilder,
   log,
@@ -53,7 +53,7 @@ const bot = WechatyBuilder.build({
   puppet: 'wechaty-puppet-xp',
   puppetOptions: {
     version: '3.9.2.23',
-  }
+  },
 })
 
 bot.on('scan',    onScan)

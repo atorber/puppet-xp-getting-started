@@ -2,6 +2,7 @@
   "extends": "@chatie/tsconfig",
   "compilerOptions": {
     "outDir": "dist",
+    "importsNotUsedAsValues": "remove"
   },
   "exclude": [
     "node_modules/",
@@ -16,6 +17,7 @@
     "scripts/**/*.ts",
     "src/**/*.ts",
     "tests/**/*.spec.ts",
+    "src/index.d.ts",
     "*.ts"
   ],
 }

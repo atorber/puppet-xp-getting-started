@@ -1,6 +1,6 @@
 {
   "name": "wechaty-puppet-xp-demo",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Demo for wechaty-puppet-xp",
   "author": "atorber",
   "license": "Apache-2.0",
@@ -9,13 +9,18 @@
     "node": ">=16",
     "npm": ">=7"
   },
+  "bin": "dist/index.js",
+  "pkg": {
+    "targets": ["node18-win-x64"],
+    "assets": ["views/**/*", "public/**/*"]
+  },
   "scripts": {
     "start": "cross-env NODE_OPTIONS=\"--no-warnings --loader=ts-node/esm\" node ./src/index.ts",
     "ding-dong": "cross-env NODE_OPTIONS=\"--no-warnings --loader=ts-node/esm\" node ./src/ding-dong-bot.ts",
     "ding-dong:js": "node ./src/ding-dong-bot.js",
     "api": "cross-env NODE_OPTIONS=\"--no-warnings --loader=ts-node/esm\" node ./src/api-support-list.ts",
     "build": "tsc",
-    "lint": "eslint \"src/*.ts\" \"tests/*.ts\""
+    "lint": "eslint --fix \"src/*.ts\""
   },
   "dependencies": {
     "dotenv": "^16.0.0",
